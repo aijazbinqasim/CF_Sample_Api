@@ -25,7 +25,7 @@ namespace CF_Sample_Api.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error saving author: {ex.Message}");
+                _logger.LogError("Error saving author: {Message}", ex.Message);
                 throw;
             }
         }
@@ -39,7 +39,7 @@ namespace CF_Sample_Api.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error retrieving authors: {ex.Message}");
+                _logger.LogError("Error retrieving authors: {Message}", ex.Message);
                 throw;
             }
         }
@@ -49,9 +49,9 @@ namespace CF_Sample_Api.Services
             try
             {
                 var author = await _context.Authors.FindAsync(id);
-                if(author == null)
+                if (author == null)
                 {
-                    _logger.LogWarning($"author with ID {id} not found!");
+                    _logger.LogWarning("Author with ID {Id} not found!", id);
                     return null!;
                 }
 
@@ -59,7 +59,7 @@ namespace CF_Sample_Api.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error retrieving author: {ex.Message}");
+                _logger.LogError("Error retrieving author: {Message}", ex.Message);
                 throw;
             }
         }
@@ -71,7 +71,7 @@ namespace CF_Sample_Api.Services
                 var existAuthor = await _context.Authors.FindAsync(id);
                 if (existAuthor == null)
                 {
-                    _logger.LogWarning($"Author with ID {id} not found!");
+                    _logger.LogWarning("Author with ID {Id} not found!", id);
                     return null!;
                 }
 
@@ -82,7 +82,7 @@ namespace CF_Sample_Api.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error updating author: {ex.Message}");
+                _logger.LogError("Error updating author: {Message}", ex.Message);
                 throw;
             }
         }
@@ -92,20 +92,20 @@ namespace CF_Sample_Api.Services
             try
             {
                 var author = await _context.Authors.FindAsync(id);
-                if(author == null)
+                if (author == null)
                 {
-                    _logger.LogWarning($"Author with ID {id} not found!");
+                    _logger.LogWarning("Author with ID {Id} not found!", id);
                     return false;
                 }
 
                 _context.Authors.Remove(author);
                 await _context.SaveChangesAsync();
-                _logger.LogInformation($"Author with ID {id} deleted successfully.");
+                _logger.LogInformation("Author with ID {Id} deleted successfully.", id);
                 return true;
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error deleting author: {ex.Message}");
+                _logger.LogError("Error deleting author: {Message}", ex.Message);
                 throw;
             }
         }

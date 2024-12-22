@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace CF_Sample_Api.Models
+﻿namespace CF_Sample_Api.Models
 {
     public class AuthorModel
     {

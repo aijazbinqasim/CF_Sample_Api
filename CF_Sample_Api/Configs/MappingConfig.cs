@@ -1,8 +1,4 @@
-﻿using AutoMapper;
-using CF_Sample_Api.Models;
-using CF_Sample_Api.Contracts;
-
-namespace CF_Sample_Api.Configs
+﻿namespace CF_Sample_Api.Configs
 {
     public class MappingConfig : Profile
     {

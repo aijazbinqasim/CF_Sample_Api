@@ -1,11 +1,4 @@
-﻿using AutoMapper;
-using CF_Sample_Api.AppContext;
-using CF_Sample_Api.Contracts;
-using CF_Sample_Api.Interfaces;
-using CF_Sample_Api.Models;
-using Microsoft.EntityFrameworkCore;
-
-namespace CF_Sample_Api.Services
+﻿namespace CF_Sample_Api.Services
 {
     public class AuthorService(ApplicationContext context, IMapper mapper, ILogger<AuthorService> logger) : IAuthorService
     {

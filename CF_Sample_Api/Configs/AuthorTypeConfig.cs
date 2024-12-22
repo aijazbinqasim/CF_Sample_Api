@@ -1,8 +1,4 @@
-﻿using CF_Sample_Api.Models;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-namespace CF_Sample_Api.Configs
+﻿namespace CF_Sample_Api.Configs
 {
     public class AuthorTypeConfig : IEntityTypeConfiguration<AuthorModel>
     {

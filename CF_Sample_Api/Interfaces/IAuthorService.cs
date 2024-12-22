@@ -1,6 +1,4 @@
-﻿using CF_Sample_Api.Contracts;
-
-namespace CF_Sample_Api.Interfaces
+﻿namespace CF_Sample_Api.Interfaces
 {
     public interface IAuthorService
     {

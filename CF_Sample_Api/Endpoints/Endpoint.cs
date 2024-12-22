@@ -1,9 +1,4 @@
-﻿using CF_Sample_Api.Contracts;
-using CF_Sample_Api.Interfaces;
-using System.Net;
-using FluentValidation;
-
-namespace CF_Sample_Api.Endpoints
+﻿namespace CF_Sample_Api.Endpoints
 {
     public static class Endpoint
     {

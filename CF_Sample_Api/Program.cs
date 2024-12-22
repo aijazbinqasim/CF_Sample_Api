@@ -1,12 +1,3 @@
-using Microsoft.OpenApi.Models;
-using FluentValidation;
-using Microsoft.EntityFrameworkCore;
-using CF_Sample_Api.Interfaces;
-using CF_Sample_Api.Services;
-using CF_Sample_Api.Endpoints;
-using CF_Sample_Api.AppContext;
-using CF_Sample_Api.Configs;
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();

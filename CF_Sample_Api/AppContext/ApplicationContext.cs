@@ -1,7 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using CF_Sample_Api.Models;
-
-namespace CF_Sample_Api.AppContext
+﻿namespace CF_Sample_Api.AppContext
 {
     public class ApplicationContext(DbContextOptions<ApplicationContext> options) : DbContext(options)
     {

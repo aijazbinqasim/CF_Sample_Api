@@ -1,6 +1,7 @@
 ﻿using CF_Sample_Api.Contracts;
 using CF_Sample_Api.Interfaces;
 using System.Net;
+using FluentValidation;
 
 namespace CF_Sample_Api.Endpoints
 {
@@ -8,21 +9,33 @@ namespace CF_Sample_Api.Endpoints
     {
         public static IEndpointRouteBuilder MapEndPoint(this IEndpointRouteBuilder app)
         {
-            app.MapPost("/authors", async (PostAuthor postAuthor, IAuthorService authorService) =>
+            app.MapPost("/authors", async (PostAuthor postAuthor, IAuthorService authorService, 
+                IValidator<PostAuthor> validator) =>
             {
-                var author = await authorService.SaveAuthorAsync(postAuthor);
                 var response = new ApiResponse<GetAuthor>
                 {
-                    Data = author,
-                    StatusCode = HttpStatusCode.Created,
-                    IsSuccess = true
+                    Data = null,
+                    StatusCode = HttpStatusCode.BadRequest,
+                    IsSuccess = false
                 };
+
+                var vResult = validator.Validate(postAuthor);
+                if (!vResult.IsValid)
+                {
+                    response.ErrorMsgs = vResult.Errors.Select(e => e.ErrorMessage).ToList();
+                    return Results.BadRequest(response);
+                }
+
+                var author = await authorService.SaveAuthorAsync(postAuthor);
+                response.Data = author;
+                response.StatusCode = HttpStatusCode.Created;
+                response.IsSuccess = true;
                 return Results.Created($"/api/authors/{author.Id}", response);
             })
             .WithName("CreateAuthor")
             .Accepts<PostAuthor>("application/json")
             .Produces<ApiResponse<GetAuthor>>(201)
-            .Produces<ApiResponse<string>>(400);
+            .Produces(400);
 
             app.MapGet("/authors", async (IAuthorService authorService) =>
             {
@@ -51,23 +64,35 @@ namespace CF_Sample_Api.Endpoints
             })
             .WithName("GetAuthorById")
             .Produces<ApiResponse<GetAuthor>>(200)
-            .Produces<ApiResponse<string>>(404);
+            .Produces(404);
 
-            app.MapPut("/authors/{id:long}", async (long id, PutAuthor putAuthor, IAuthorService authorService) =>
+            app.MapPut("/authors/{id:long}", async (long id, PutAuthor putAuthor, IAuthorService authorService, 
+                IValidator<PutAuthor> validator) =>
             {
-                var author = await authorService.UpdateAuthorAsync(id, putAuthor);
                 var response = new ApiResponse<GetAuthor>
                 {
-                    Data = author,
-                    StatusCode = author != null ? HttpStatusCode.OK : HttpStatusCode.NotFound,
-                    IsSuccess = author != null
+                    Data = null,
+                    StatusCode = HttpStatusCode.BadRequest,
+                    IsSuccess = false
                 };
+
+                var vResult = validator.Validate(putAuthor);
+                if (!vResult.IsValid)
+                {
+                    response.ErrorMsgs = vResult.Errors.Select(e => e.ErrorMessage).ToList();
+                    return Results.BadRequest(response);
+                }
+
+                var author = await authorService.UpdateAuthorAsync(id, putAuthor);
+                response.Data = author;
+                response.StatusCode = author != null ? HttpStatusCode.OK : HttpStatusCode.NotFound;
+                response.IsSuccess = author != null;
                 return author != null ? Results.Ok(response) : Results.NotFound(response);
             })
             .WithName("UpdateAuthor")
             .Accepts<PutAuthor>("application/json")
             .Produces<ApiResponse<GetAuthor>>(200)
-            .Produces<ApiResponse<string>>(404);
+            .Produces(404);
 
             app.MapDelete("/authors/{id:long}", async (long id, IAuthorService authorService) =>
             {
@@ -82,7 +107,7 @@ namespace CF_Sample_Api.Endpoints
             })
             .WithName("DeleteAuthor")
             .Produces<ApiResponse<bool>>(204)
-            .Produces<ApiResponse<string>>(404);
+            .Produces(404);
            
             return app;
         }

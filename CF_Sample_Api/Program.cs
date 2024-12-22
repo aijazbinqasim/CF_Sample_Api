@@ -1,9 +1,11 @@
+using Microsoft.OpenApi.Models;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using CF_Sample_Api.Interfaces;
 using CF_Sample_Api.Services;
 using CF_Sample_Api.Endpoints;
 using CF_Sample_Api.AppContext;
-using Microsoft.OpenApi.Models;
+using CF_Sample_Api.Configs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,8 +21,9 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 builder.Services.AddDbContext<ApplicationContext>(config => config.UseSqlServer(builder.Configuration.GetConnectionString("DbConnection")));
-builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddAutoMapper(typeof(MappingConfig));
 builder.Services.AddScoped<IAuthorService, AuthorService>();
+builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
 var app = builder.Build();
 

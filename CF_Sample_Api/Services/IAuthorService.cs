@@ -1,4 +1,4 @@
-﻿namespace CF_Sample_Api.Interfaces
+﻿namespace CF_Sample_Api.Services
 {
     public interface IAuthorService
     {
@@ -6,6 +6,6 @@
         Task<IEnumerable<GetAuthor>> GetAuthorsAsync();
         Task<GetAuthor> GetAuthorByIdAsync(long id);
         Task<GetAuthor> UpdateAuthorAsync(long id, PutAuthor putAuthor);
-        Task<bool> DeleteAuthorAsync(long id); 
+        Task<bool> DeleteAuthorAsync(long id);
     }
 }

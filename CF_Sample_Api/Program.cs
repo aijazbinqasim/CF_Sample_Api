@@ -11,10 +11,21 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-builder.Services.AddDbContext<ApplicationContext>(config => config.UseSqlServer(builder.Configuration.GetConnectionString("DbConnection")));
+builder.Services.AddDbContext<ApplicationContext>(config => config.UseSqlServer(CipherHelper.Decrypt(builder.Configuration.GetConnectionString("DbConnection")!)));
 builder.Services.AddAutoMapper(typeof(MappingConfig));
 builder.Services.AddScoped<IAuthorService, AuthorService>();
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials();
+    });
+});
+builder.Services.AddTransient<ApiKeyValidationConfig>();
 
 var app = builder.Build();
 
@@ -28,7 +39,9 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+app.UseCors();
 app.UseHttpsRedirection();
+app.UseApiKeyMiddleware();
 app.MapGroup("/api/v1/")
     .WithTags("Author endpoints")
     .MapEndPoint();

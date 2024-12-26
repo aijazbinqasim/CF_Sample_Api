@@ -1,10 +1,10 @@
 ﻿namespace CF_Sample_Api.Configs
 {
-    public class AuthorTypeConfig : IEntityTypeConfiguration<AuthorModel>
+    public class AuthorModelTypeConfig : IEntityTypeConfiguration<AuthorModel>
     {
         public void Configure(EntityTypeBuilder<AuthorModel> builder)
         {
-            builder.ToTable("Authors");
+            builder.ToTable("Author");
 
             builder.HasKey(x => x.Id);
 
@@ -20,6 +20,10 @@
 
             builder.Property(x => x.Email)
                 .HasMaxLength(250);
+
+            builder.HasMany(x => x.Books)
+                .WithOne(x => x.Author)
+                .HasForeignKey(x => x.AuthorId);
 
             builder.HasData(
                 new AuthorModel

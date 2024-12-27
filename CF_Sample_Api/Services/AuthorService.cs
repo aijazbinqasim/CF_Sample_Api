@@ -1,8 +1,8 @@
 ﻿namespace CF_Sample_Api.Services
 {
-    public class AuthorService(ApplicationContext context, IMapper mapper, ILogger<AuthorService> logger) : IAuthorService
+    public class AuthorService(ApplicationDbContext context, IMapper mapper, ILogger<AuthorService> logger) : IAuthorService
     {
-        private readonly ApplicationContext _context = context;
+        private readonly ApplicationDbContext _context = context;
         private readonly IMapper _mapper = mapper;
         private readonly ILogger<AuthorService> _logger = logger;
 

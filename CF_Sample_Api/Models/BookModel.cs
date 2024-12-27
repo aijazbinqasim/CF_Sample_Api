@@ -7,6 +7,6 @@
         public required decimal BookPrice { get; set; }
         public string? Isbn { get; set; }
         public long? AuthorId { get; set; }
-        public AuthorModel Author { get; set; } = null!;
+        public AuthorModel? Author { get; set; }
     }
 }

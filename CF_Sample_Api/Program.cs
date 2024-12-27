@@ -11,7 +11,32 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-builder.Services.AddDbContext<ApplicationContext>(config => config.UseSqlServer(CipherHelper.Decrypt(builder.Configuration.GetConnectionString("DbConnection")!)));
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(CipherHelper.Decrypt(builder.Configuration.GetConnectionString("DbConnection")!)));
+builder.Services.AddIdentity<AppUserModel, IdentityRole>(options => options.User.RequireUniqueEmail = true)
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders();
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+    .AddJwtBearer(options =>
+    {
+        options.SaveToken = true;
+        options.RequireHttpsMetadata = false;
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidAudience = builder.Configuration.GetValue<string>("Jwt:Audience"),
+            ValidIssuer = builder.Configuration.GetValue<string>("Jwt:Issuer"),
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(CipherHelper.Decrypt(builder.Configuration["Jwt:Key"]!)))
+        };
+    });
+
+
 builder.Services.AddAutoMapper(typeof(MappingConfig));
 builder.Services.AddScoped<IAuthorService, AuthorService>();
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
@@ -40,6 +65,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors();
 app.UseHttpsRedirection();
+//app.UseAuthentication();
+//app.UseAuthorization();
 app.UseApiKeyMiddleware();
 app.MapGroup("/api/v1/")
     .WithTags("Author endpoints")

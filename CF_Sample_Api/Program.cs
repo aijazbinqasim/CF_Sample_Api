@@ -12,7 +12,7 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(CipherHelper.Decrypt(builder.Configuration.GetConnectionString("DbConnection")!)));
-builder.Services.AddIdentity<AppUserModel, IdentityRole>(options => options.User.RequireUniqueEmail = true)
+builder.Services.AddIdentity<AppUserModel, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
@@ -39,6 +39,7 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAutoMapper(typeof(MappingConfig));
 builder.Services.AddScoped<IAuthorService, AuthorService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 builder.Services.AddCors(options =>
 {
@@ -65,11 +66,18 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors();
 app.UseHttpsRedirection();
+
 //app.UseAuthentication();
 //app.UseAuthorization();
+
 app.UseApiKeyMiddleware();
+
 app.MapGroup("/api/v1/")
-    .WithTags("Author endpoints")
-    .MapEndPoint();
+    .WithTags("Authentication")
+    .MapAuthEndpoint();
+
+app.MapGroup("/api/v1/")
+    .WithTags("Authors")
+    .MapAuthorEndPoint();
 
 app.Run();

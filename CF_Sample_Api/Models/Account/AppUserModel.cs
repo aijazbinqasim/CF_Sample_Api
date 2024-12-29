@@ -1,4 +1,4 @@
-﻿namespace CF_Sample_Api.Models
+﻿namespace CF_Sample_Api.Models.Account
 {
     public class AppUserModel : IdentityUser
     {

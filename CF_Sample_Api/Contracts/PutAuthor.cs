@@ -12,13 +12,10 @@
         public PutAuthorValidator()
         {
             RuleFor(model => model.FirstName)
-                .NotEmpty()
-                .NotNull()
-                .WithMessage("First Name is required");
+                .NotEmpty();
 
             RuleFor(model => model.Email)
-                .EmailAddress()
-                .WithMessage("Email is not valid");
+                .EmailAddress();
         }
     }
 }

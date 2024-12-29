@@ -13,7 +13,6 @@
                 var author = _mapper.Map<AuthorModel>(postAuthor);
                 _context.Authors.Add(author);
                 await _context.SaveChangesAsync();
-                _logger.LogInformation("Author saved successfully.");
                 return _mapper.Map<GetAuthor>(author);
             }
             catch (Exception ex)
@@ -43,10 +42,7 @@
             {
                 var author = await _context.Authors.FindAsync(id);
                 if (author == null)
-                {
-                    _logger.LogWarning("Author with ID {Id} not found!", id);
                     return null!;
-                }
 
                 return _mapper.Map<GetAuthor>(author);
             }
@@ -63,14 +59,10 @@
             {
                 var existAuthor = await _context.Authors.FindAsync(id);
                 if (existAuthor == null)
-                {
-                    _logger.LogWarning("Author with ID {Id} not found!", id);
                     return null!;
-                }
 
                 _mapper.Map(putAuthor, existAuthor);
                 await _context.SaveChangesAsync();
-                _logger.LogInformation("Author updated successfully.");
                 return _mapper.Map<GetAuthor>(existAuthor);
             }
             catch (Exception ex)
@@ -86,14 +78,10 @@
             {
                 var author = await _context.Authors.FindAsync(id);
                 if (author == null)
-                {
-                    _logger.LogWarning("Author with ID {Id} not found!", id);
                     return false;
-                }
 
                 _context.Authors.Remove(author);
                 await _context.SaveChangesAsync();
-                _logger.LogInformation("Author with ID {Id} deleted successfully.", id);
                 return true;
             }
             catch (Exception ex)

@@ -1,10 +1,10 @@
 ﻿namespace CF_Sample_Api.Endpoints
 {
-    public static class Endpoint
+    public static class AuthorEndpoint
     {
-        public static IEndpointRouteBuilder MapEndPoint(this IEndpointRouteBuilder app)
+        public static IEndpointRouteBuilder MapAuthorEndPoint(this IEndpointRouteBuilder app)
         {
-            app.MapPost("/authors", async (PostAuthor postAuthor, IAuthorService authorService, 
+            app.MapPost("/authors", async ([FromBody] PostAuthor postAuthor, IAuthorService authorService,
                 IValidator<PostAuthor> validator) =>
             {
                 var response = new ApiResponse<GetAuthor>
@@ -26,11 +26,7 @@
                 response.StatusCode = HttpStatusCode.Created;
                 response.IsSuccess = true;
                 return Results.Created($"/api/authors/{author.Id}", response);
-            })
-            .WithName("CreateAuthor")
-            .Accepts<PostAuthor>("application/json")
-            .Produces<ApiResponse<GetAuthor>>(201)
-            .Produces(400);
+            }).WithName("CreateAuthor");
 
             app.MapGet("/authors", async (IAuthorService authorService) =>
             {
@@ -42,11 +38,9 @@
                     IsSuccess = true
                 };
                 return Results.Ok(response);
-            })
-            .WithName("GetAuthors")
-            .Produces<ApiResponse<IEnumerable<GetAuthor>>>(200);
+            }).WithName("GetAuthors");
 
-            app.MapGet("/authors/{id:long}", async (long id, IAuthorService authorService) =>
+            app.MapGet("/authors/{id:long}", async ([FromRoute] long id, IAuthorService authorService) =>
             {
                 var author = await authorService.GetAuthorByIdAsync(id);
                 var response = new ApiResponse<GetAuthor>
@@ -56,12 +50,9 @@
                     IsSuccess = author != null
                 };
                 return author != null ? Results.Ok(response) : Results.NotFound(response);
-            })
-            .WithName("GetAuthorById")
-            .Produces<ApiResponse<GetAuthor>>(200)
-            .Produces(404);
+            }).WithName("GetAuthorById");
 
-            app.MapPut("/authors/{id:long}", async (long id, PutAuthor putAuthor, IAuthorService authorService, 
+            app.MapPut("/authors/{id:long}", async ([FromRoute] long id, PutAuthor putAuthor, IAuthorService authorService,
                 IValidator<PutAuthor> validator) =>
             {
                 var response = new ApiResponse<GetAuthor>
@@ -83,13 +74,9 @@
                 response.StatusCode = author != null ? HttpStatusCode.OK : HttpStatusCode.NotFound;
                 response.IsSuccess = author != null;
                 return author != null ? Results.Ok(response) : Results.NotFound(response);
-            })
-            .WithName("UpdateAuthor")
-            .Accepts<PutAuthor>("application/json")
-            .Produces<ApiResponse<GetAuthor>>(200)
-            .Produces(404);
+            }).WithName("UpdateAuthor");
 
-            app.MapDelete("/authors/{id:long}", async (long id, IAuthorService authorService) =>
+            app.MapDelete("/authors/{id:long}", async ([FromRoute] long id, IAuthorService authorService) =>
             {
                 var isDeleted = await authorService.DeleteAuthorAsync(id);
                 var response = new ApiResponse<bool>
@@ -99,10 +86,7 @@
                     IsSuccess = isDeleted
                 };
                 return isDeleted ? Results.NoContent() : Results.NotFound(response);
-            })
-            .WithName("DeleteAuthor")
-            .Produces<ApiResponse<bool>>(204)
-            .Produces(404);
+            }).WithName("DeleteAuthor");
            
             return app;
         }

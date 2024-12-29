@@ -6,6 +6,7 @@
         public HttpStatusCode StatusCode { get; set; }
         public IList<string>? ErrorMsgs { get; set; }
         public bool IsSuccess { get; set; }
+        public string? Message { get; set; }
         public ApiResponse() => ErrorMsgs = [];
     }
 }

@@ -70,7 +70,7 @@ app.UseHttpsRedirection();
 //app.UseAuthentication();
 //app.UseAuthorization();
 
-app.UseApiKeyMiddleware();
+//app.UseApiKeyMiddleware();
 
 app.MapGroup("/api/v1/")
     .WithTags("Authentication")

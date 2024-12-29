@@ -2,6 +2,6 @@
 {
     public interface IAuthService
     {            
-        Task<(bool Succeeded, List<string> Errors)> CreateUserAsync(PostAppUser postAppUser);
+        Task<(bool Succeeded, string message, List<string> Errors)> CreateUserAsync(PostAppUser postAppUser);
     }
 }

@@ -26,7 +26,7 @@
                 response.StatusCode = HttpStatusCode.Created;
                 response.IsSuccess = true;
                 return Results.Created($"/api/authors/{author.Id}", response);
-            }).WithName("CreateAuthor");
+            });
 
             app.MapGet("/authors", async (IAuthorService authorService) =>
             {
@@ -38,7 +38,7 @@
                     IsSuccess = true
                 };
                 return Results.Ok(response);
-            }).WithName("GetAuthors");
+            });
 
             app.MapGet("/authors/{id:long}", async ([FromRoute] long id, IAuthorService authorService) =>
             {
@@ -50,7 +50,7 @@
                     IsSuccess = author != null
                 };
                 return author != null ? Results.Ok(response) : Results.NotFound(response);
-            }).WithName("GetAuthorById");
+            });
 
             app.MapPut("/authors/{id:long}", async ([FromRoute] long id, PutAuthor putAuthor, IAuthorService authorService,
                 IValidator<PutAuthor> validator) =>
@@ -74,7 +74,7 @@
                 response.StatusCode = author != null ? HttpStatusCode.OK : HttpStatusCode.NotFound;
                 response.IsSuccess = author != null;
                 return author != null ? Results.Ok(response) : Results.NotFound(response);
-            }).WithName("UpdateAuthor");
+            });
 
             app.MapDelete("/authors/{id:long}", async ([FromRoute] long id, IAuthorService authorService) =>
             {
@@ -86,7 +86,7 @@
                     IsSuccess = isDeleted
                 };
                 return isDeleted ? Results.NoContent() : Results.NotFound(response);
-            }).WithName("DeleteAuthor");
+            });
            
             return app;
         }

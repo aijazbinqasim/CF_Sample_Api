@@ -1,4 +1,4 @@
-﻿namespace CF_Sample_Api.Contracts
+﻿namespace CF_Sample_Api.Contracts.Author
 {
     public class GetAuthor
     {

@@ -1,4 +1,4 @@
-﻿namespace CF_Sample_Api.Configs
+﻿namespace CF_Sample_Api.Configs.Book
 {
     public class BookModelTypeConfig : IEntityTypeConfiguration<BookModel>
     {

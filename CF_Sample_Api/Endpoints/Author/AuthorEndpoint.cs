@@ -1,4 +1,4 @@
-﻿namespace CF_Sample_Api.Endpoints
+﻿namespace CF_Sample_Api.Endpoints.Author
 {
     public static class AuthorEndpoint
     {
@@ -87,7 +87,7 @@
                 };
                 return isDeleted ? Results.NoContent() : Results.NotFound(response);
             });
-           
+
             return app;
         }
     }

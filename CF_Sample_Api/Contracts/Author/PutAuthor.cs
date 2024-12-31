@@ -1,14 +1,15 @@
-﻿namespace CF_Sample_Api.Contracts
+﻿namespace CF_Sample_Api.Contracts.Author
 {
-    public class PostAuthor
+    public class PutAuthor
     {
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
         public string? Email { get; set; }
     }
-    public class PostAuthorValidator : AbstractValidator<PostAuthor>
+
+    public class PutAuthorValidator : AbstractValidator<PutAuthor>
     {
-        public PostAuthorValidator()
+        public PutAuthorValidator()
         {
             RuleFor(model => model.FirstName)
                 .NotEmpty();

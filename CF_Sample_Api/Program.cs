@@ -36,7 +36,7 @@ builder.Services.AddAuthentication(options =>
         };
     });
 
-
+builder.Services.AddAuthorization();
 builder.Services.AddAutoMapper(typeof(MappingConfig));
 builder.Services.AddScoped<IAuthorService, AuthorService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
@@ -66,10 +66,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors();
 app.UseHttpsRedirection();
-
-//app.UseAuthentication();
-//app.UseAuthorization();
-
+app.UseAuthentication();
+app.UseAuthorization();
 //app.UseApiKeyMiddleware();
 
 app.MapGroup("/api/v1/")

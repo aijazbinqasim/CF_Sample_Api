@@ -4,7 +4,7 @@
     {
         public static IEndpointRouteBuilder MapAuthorEndPoint(this IEndpointRouteBuilder app)
         {
-            app.MapPost("/authors", async ([FromBody] PostAuthor postAuthor, IAuthorService authorService,
+            app.MapPost("/authors", [Authorize] async ([FromBody] PostAuthor postAuthor, IAuthorService authorService,
                 IValidator<PostAuthor> validator) =>
             {
                 var response = new ApiResponse<GetAuthor>
@@ -28,7 +28,7 @@
                 return Results.Created($"/api/authors/{author.Id}", response);
             });
 
-            app.MapGet("/authors", async (IAuthorService authorService) =>
+            app.MapGet("/authors", [Authorize] async (IAuthorService authorService) =>
             {
                 var authors = await authorService.GetAuthorsAsync();
                 var response = new ApiResponse<IEnumerable<GetAuthor>>
@@ -40,7 +40,7 @@
                 return Results.Ok(response);
             });
 
-            app.MapGet("/authors/{id:long}", async ([FromRoute] long id, IAuthorService authorService) =>
+            app.MapGet("/authors/{id:long}", [Authorize] async ([FromRoute] long id, IAuthorService authorService) =>
             {
                 var author = await authorService.GetAuthorByIdAsync(id);
                 var response = new ApiResponse<GetAuthor>
@@ -52,7 +52,7 @@
                 return author != null ? Results.Ok(response) : Results.NotFound(response);
             });
 
-            app.MapPut("/authors/{id:long}", async ([FromRoute] long id, PutAuthor putAuthor, IAuthorService authorService,
+            app.MapPut("/authors/{id:long}", [Authorize] async ([FromRoute] long id, PutAuthor putAuthor, IAuthorService authorService,
                 IValidator<PutAuthor> validator) =>
             {
                 var response = new ApiResponse<GetAuthor>
@@ -76,7 +76,7 @@
                 return author != null ? Results.Ok(response) : Results.NotFound(response);
             });
 
-            app.MapDelete("/authors/{id:long}", async ([FromRoute] long id, IAuthorService authorService) =>
+            app.MapDelete("/authors/{id:long}", [Authorize] async ([FromRoute] long id, IAuthorService authorService) =>
             {
                 var isDeleted = await authorService.DeleteAuthorAsync(id);
                 var response = new ApiResponse<bool>

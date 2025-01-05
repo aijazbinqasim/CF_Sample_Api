@@ -7,19 +7,25 @@
         private readonly ILogger<AuthService> _logger = logger;
         private readonly IConfiguration _configuration = configuration;
 
-        public async Task<(bool Succeeded, string message, List<string> Errors)> CreateUserAsync(PostAppUser user)
+        public async Task<(bool Succeeded, string message, List<string> Errors, object? userInfo)> CreateUserAsync(PostAppUser user)
         {
             try
             {
                 if (await _userManager.FindByNameAsync(user.UserName!) != null)
-                    return (false, "Username already exists", new List<string>());
+                    return (false, "User couldn't be created.", ["Username already exists."], null);
 
                 var result = await _userManager.CreateAsync(_mapper.Map<AppUserModel>(user), user.Password!);
 
                 if (!result.Succeeded)
-                    return (false, string.Empty, result.Errors.Select(e => e.Description).ToList());
+                    return (false, "Something went wrong.", result.Errors.Select(e => e.Description).ToList(), null);
 
-                return (true, "User created successfully.", new List<string>());
+                var userInfo = new
+                {
+                    Username = user.UserName,
+                    Useremail = user.Email
+                };
+
+                return (true, "User created successfully.", new List<string>(), userInfo);
             }
             catch (Exception ex)
             {

@@ -20,19 +20,16 @@
                     return Results.BadRequest(response);
                 }
 
-                var (Succeeded, message, Errors) = await authService.CreateUserAsync(user);
+                var (Succeeded, message, Errors, userInfo) = await authService.CreateUserAsync(user);
                 if (!Succeeded)
                 {
-                    if (!string.IsNullOrEmpty(message))
-                    {
-                        response.StatusCode = HttpStatusCode.Conflict;
-                        response.Message = message;
-                    }
-                    else response.ErrorMsgs = Errors;
-
-                    return Results.BadRequest(response);
+                    response.StatusCode = HttpStatusCode.Conflict;
+                    response.Message = message;
+                    response.ErrorMsgs = Errors;
+                    return Results.Conflict(response);
                 }
 
+                response.Data = userInfo;
                 response.IsSuccess = true;
                 response.StatusCode = HttpStatusCode.Created;
                 response.Message = message;

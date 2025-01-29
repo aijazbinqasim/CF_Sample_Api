@@ -7,7 +7,7 @@ builder.Services.AddSwaggerGen(c =>
     {
         Title = "Minimal API",
         Version = "v1",
-        Description = "Showing how you can build minimal api with .net"
+        Description = "Showing how you can build minimal api with .net core."
     });
 });
 
